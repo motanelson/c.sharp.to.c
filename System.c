@@ -41,6 +41,10 @@ char Console_Read() {
 void Console_WriteLine(const char* texto) {
     printf("%s\n", texto);
 }
+void Console_Write(const char* texto) {
+    printf("%s", texto);
+    fflush(stdout);
+}
 
 char* File_ReadAllText(const char* path) {
     FILE* f = fopen(path, "r");
