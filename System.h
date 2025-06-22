@@ -7,7 +7,7 @@
 
 void Console_Clear();
 void Console_WriteLine(const char* texto);
-FILE* File_ReadAllText(const char* path);
-FILE* File_WriteAllText(const char* path);
+char* File_ReadAllText(const char* path);
+int File_WriteAllText(const char* path);
 
 #endif
