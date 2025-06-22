@@ -3,7 +3,8 @@ import re
 def converter_csharp_para_c(codigo_cs):
     linhas = codigo_cs.splitlines()
     saida = []
-    leu_arquivo = False
+    faz_leitura = False
+    faz_escrita = False
 
     for linha in linhas:
         linha = linha.strip()
@@ -14,48 +15,63 @@ def converter_csharp_para_c(codigo_cs):
             saida.append(f'#include "{nome}.h"')
             continue
 
-        # Ignorar namespace/classe/chaves
+        # Ignorar namespace, class, chaves isoladas
         if linha.startswith("namespace ") or linha.startswith("class "):
             continue
         if linha in ("{", "}"):
             continue
 
-        # Substituições básicas
+        # Substituições de tipos
         linha = linha.replace("string", "char*")
         linha = re.sub(r'\b(public|private|static|internal|protected|virtual|override)\b', '', linha)
         linha = re.sub(r'\s+', ' ', linha).strip()
 
-        # Conversão de File.ReadAllText
+        # Leitura do ficheiro
         if "File.ReadAllText" in linha:
-            leu_arquivo = True
+            faz_leitura = True
             saida.append('FILE* ficheiro = fopen("out.txt", "r");')
             saida.append('if (ficheiro == NULL) {')
             saida.append('    printf("Erro ao abrir o ficheiro.\\n");')
             saida.append('    return;')
             saida.append('}')
             saida.append('char linha[1024];')
-            saida.append('while (fgets(linha, sizeof(linha), ficheiro)) {')
             continue
 
-        # Impressão com printf
+        # Escrita do ficheiro
+        if "File.WriteAllText" in linha:
+            faz_escrita = True
+            saida.append('FILE* destino = fopen("out.dat", "w");')
+            saida.append('if (destino == NULL) {')
+            saida.append('    printf("Erro ao criar o ficheiro de saída.\\n");')
+            saida.append('    fclose(ficheiro);')
+            saida.append('    return;')
+            saida.append('}')
+            continue
+
+        # Console.WriteLine => printf e fputs
         if "Console.WriteLine" in linha:
-            if leu_arquivo:
+            if faz_leitura and faz_escrita:
+                saida.append('while (fgets(linha, sizeof(linha), ficheiro)) {')
+                saida.append('    printf("%s", linha);')
+                saida.append('    fputs(linha, destino);')
+                saida.append('}')
+                saida.append('fclose(ficheiro);')
+                saida.append('fclose(destino);')
+                faz_leitura = False
+                faz_escrita = False
+            elif faz_leitura:
+                saida.append('while (fgets(linha, sizeof(linha), ficheiro)) {')
                 saida.append('    printf("%s", linha);')
                 saida.append('}')
                 saida.append('fclose(ficheiro);')
-                leu_arquivo = False
-            else:
-                conteudo = re.findall(r'Console\.WriteLine\((.*)\);', linha)
-                if conteudo:
-                    saida.append(f'printf({conteudo[0]});')
+                faz_leitura = False
             continue
 
-        # Adicionar cabeçalho da função
         if linha.startswith("void Main()"):
             saida.append("void Main() {")
             continue
 
-        if linha and not leu_arquivo:
+        if linha:
             saida.append(linha)
 
     return "\n".join(saida)
@@ -78,6 +94,8 @@ def main():
 
     except FileNotFoundError:
         print("Ficheiro não encontrado.")
+
+
 
 print("\033c\033[43;30m\n")
 if __name__ == "__main__":
