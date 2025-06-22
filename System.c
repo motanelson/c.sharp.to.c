@@ -1,17 +1,7 @@
 #include "System.h"
-
-void Console_Clear() {
-    for (int i = 0; i < 500; i++) {
-        printf("\n");
-    }
-}
-
-void Console_WriteLine(const char* texto) {
-    printf("%s\n", texto);
-}
-
-#include "System.h"
 #include <string.h>
+
+
 
 #define BLOCO_TAMANHO 4096
 
@@ -19,6 +9,10 @@ void Console_Clear() {
     for (int i = 0; i < 500; i++) {
         printf("\n");
     }
+}
+void Console_Beep() {
+    printf("\a");
+    fflush(stdout);  // Garante que o som é enviado imediatamente
 }
 
 void Console_WriteLine(const char* texto) {

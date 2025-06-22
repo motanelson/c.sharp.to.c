@@ -6,6 +6,7 @@
 #include <string.h>
 
 void Console_Clear();
+void Console_Beep();
 void Console_WriteLine(const char* texto);
 char* File_ReadAllText(const char* path);
 int File_WriteAllText(const char* path);
