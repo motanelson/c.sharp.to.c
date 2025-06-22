@@ -112,14 +112,15 @@ char Console_ReadKey() {
     }
     return (char)c;
 }
-char *ToString(int texto) {
-    char a[1024];
-    char *aa=a;
-    a[0]='\0';
-    sprintf(a,"%1d", texto);
-    return aa;
-}
+char *ToString(int numero) {
+    char *buffer = (char *)malloc(1024); // Aloca 1024 caracteres
+    if (buffer == NULL) {
+        return NULL; // Falha na alocação
+    }
 
+    sprintf(buffer, "%d", numero); // Converte o inteiro para string
+    return buffer;
+}
 
 void Console_WriteLine(const char* texto) {
     printf("%s\n", texto);
