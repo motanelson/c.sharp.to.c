@@ -5,6 +5,7 @@ def converter_csharp_para_c(codigo_cs):
     saida = []
     faz_leitura = False
     faz_escrita = False
+    fez_clear = False
 
     for linha in linhas:
         linha = linha.strip()
@@ -15,18 +16,26 @@ def converter_csharp_para_c(codigo_cs):
             saida.append(f'#include "{nome}.h"')
             continue
 
-        # Ignorar namespace, class, chaves isoladas
+        # Ignorar namespace/classe/chaves
         if linha.startswith("namespace ") or linha.startswith("class "):
             continue
         if linha in ("{", "}"):
             continue
 
-        # Substituições de tipos
+        # Tipos e modificadores
         linha = linha.replace("string", "char*")
         linha = re.sub(r'\b(public|private|static|internal|protected|virtual|override)\b', '', linha)
         linha = re.sub(r'\s+', ' ', linha).strip()
 
-        # Leitura do ficheiro
+        # Console.Clear() → for (int i = 0; i < 500; i++) { printf("\n"); }
+        if "Console.Clear()" in linha and not fez_clear:
+            saida.append('for (int i = 0; i < 500; i++) {')
+            saida.append('    printf("\\n");')
+            saida.append('}')
+            fez_clear = True
+            continue
+
+        # File.ReadAllText
         if "File.ReadAllText" in linha:
             faz_leitura = True
             saida.append('FILE* ficheiro = fopen("out.txt", "r");')
@@ -37,7 +46,7 @@ def converter_csharp_para_c(codigo_cs):
             saida.append('char linha[1024];')
             continue
 
-        # Escrita do ficheiro
+        # File.WriteAllText
         if "File.WriteAllText" in linha:
             faz_escrita = True
             saida.append('FILE* destino = fopen("out.dat", "w");')
@@ -48,7 +57,7 @@ def converter_csharp_para_c(codigo_cs):
             saida.append('}')
             continue
 
-        # Console.WriteLine => printf e fputs
+        # Console.WriteLine com leitura e escrita
         if "Console.WriteLine" in linha:
             if faz_leitura and faz_escrita:
                 saida.append('while (fgets(linha, sizeof(linha), ficheiro)) {')
@@ -96,7 +105,7 @@ def main():
         print("Ficheiro não encontrado.")
 
 
-
 print("\033c\033[43;30m\n")
+
 if __name__ == "__main__":
     main()
