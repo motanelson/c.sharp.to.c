@@ -31,6 +31,13 @@ char* Console_ReadLine() {
 
     return buffer;
 }
+char Console_Read() {
+    int c = getc(stdin);
+    if (c == EOF) {
+        return '\0';  // ou um valor especial, como -1, se quiseres
+    }
+    return (char)c;
+}
 void Console_WriteLine(const char* texto) {
     printf("%s\n", texto);
 }
