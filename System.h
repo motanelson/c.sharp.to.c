@@ -24,6 +24,8 @@ typedef enum {
     Yellow,
     White
 } ConsoleColor;
+void Console_SetCursorPosition(int x,int y);
+char Console_ReadKey();
 void Console_ResetColor();
 void Console_ForegroundColor(ConsoleColor color);
 void Console_BackgroundColor(ConsoleColor color);

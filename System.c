@@ -38,6 +38,14 @@ char Console_Read() {
     }
     return (char)c;
 }
+char Console_ReadKey() {
+    int c = getc(stdin);
+    if (c == EOF) {
+        return '\0';  // ou um valor especial, como -1, se quiseres
+    }
+    return (char)c;
+}
+
 void Console_WriteLine(const char* texto) {
     printf("%s\n", texto);
 }
@@ -116,6 +124,10 @@ void Console_ResetColor() {
     
     printf("\033[37;40m");
     
+    fflush(stdout);  // aplica imediatamente
+}
+void Console_SetCursorPosition(int x,int y) {
+    printf("\033[%d;%dd", y,x);
     fflush(stdout);  // aplica imediatamente
 }
 
