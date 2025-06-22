@@ -25,6 +25,7 @@ typedef enum {
     White
 } ConsoleColor;
 
+void Console_BackgroundColor(ConsoleColor color);
 void Console_Clear();
 void Console_Beep();
 char Console_Read();

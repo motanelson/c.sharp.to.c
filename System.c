@@ -88,4 +88,13 @@ int File_WriteAllText(const char* path, const char* conteudo) {
     fclose(f);
     return 1;
 }
+void Console_BackgroundColor(ConsoleColor color) {
+    int n = 40 + (color % 8);  // ANSI base para background (cores normais)
+    printf("\033[%dm", n);
 
+    if (color >= 8) {
+        printf("\033[1m"); // brilhante se for "High" color
+    }
+
+    fflush(stdout);  // aplica imediatamente
+}
