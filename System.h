@@ -112,13 +112,13 @@ char Console_ReadKey() {
     }
     return (char)c;
 }
-char *ToString(int numero) {
+char *ToString(double numero) {
     char *buffer = (char *)malloc(1024); // Aloca 1024 caracteres
     if (buffer == NULL) {
         return NULL; // Falha na alocação
     }
 
-    sprintf(buffer, "%d", numero); // Converte o inteiro para string
+    sprintf(buffer, "%.2f", numero); // Converte o inteiro para string
     return buffer;
 }
 
