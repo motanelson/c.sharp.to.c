@@ -112,4 +112,11 @@ void Console_ForegroundColor(ConsoleColor color) {
 
     fflush(stdout);  // aplica imediatamente
 }
+void Console_ResetColor() {
+    
+    printf("\033[37;40m");
+    
+    fflush(stdout);  // aplica imediatamente
+}
+
 
