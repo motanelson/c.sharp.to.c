@@ -98,3 +98,14 @@ void Console_BackgroundColor(ConsoleColor color) {
 
     fflush(stdout);  // aplica imediatamente
 }
+void Console_ForegroundColor(ConsoleColor color) {
+    int n = 30 + (color % 8);  // ANSI base para background (cores normais)
+    printf("\033[%dm", n);
+
+    if (color >= 8) {
+        printf("\033[1m"); // brilhante se for "High" color
+    }
+
+    fflush(stdout);  // aplica imediatamente
+}
+
