@@ -5,6 +5,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Cores da consola (baseadas no ConsoleColor do C#)
+typedef enum {
+    Black = 0,
+    DarkBlue,
+    DarkGreen,
+    DarkCyan,
+    DarkRed,
+    DarkMagenta,
+    DarkYellow,
+    Gray,
+    DarkGray,
+    Blue,
+    Green,
+    Cyan,
+    Red,
+    Magenta,
+    Yellow,
+    White
+} ConsoleColor;
+
 void Console_Clear();
 void Console_Beep();
 char Console_Read();
