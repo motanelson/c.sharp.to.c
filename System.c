@@ -14,7 +14,23 @@ void Console_Beep() {
     printf("\a");
     fflush(stdout);  // Garante que o som é enviado imediatamente
 }
+char* Console_ReadLine() {
+    char* buffer = malloc(BLOCO_TAMANHO);
+    if (!buffer) return NULL;
 
+    if (fgets(buffer, BLOCO_TAMANHO, stdin) == NULL) {
+        free(buffer);
+        return NULL;
+    }
+
+    // Remove newline se presente
+    size_t len = strlen(buffer);
+    if (len > 0 && buffer[len - 1] == '\n') {
+        buffer[len - 1] = '\0';
+    }
+
+    return buffer;
+}
 void Console_WriteLine(const char* texto) {
     printf("%s\n", texto);
 }
