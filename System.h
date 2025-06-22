@@ -168,7 +168,12 @@ int File_WriteAllText(const char* path, const char* conteudo) {
     return 1;
 }
 void Console_BackgroundColor(ConsoleColor color) {
-    int n = 40 + (color % 8);  // ANSI base para background (cores normais)
+    int a=0;
+    int r=(4 & color)>>2;
+    int g= 2 & color;
+    int b=(1 & color)<<2;
+    a=r | g | b;
+    int n = 40 + ((a) & 7 % 8);  // ANSI base para background (cores normais)
     printf("\033[%dm", n);
 
     if (color >= 8) {
@@ -178,7 +183,12 @@ void Console_BackgroundColor(ConsoleColor color) {
     fflush(stdout);  // aplica imediatamente
 }
 void Console_ForegroundColor(ConsoleColor color) {
-    int n = 30 + (color % 8);  // ANSI base para background (cores normais)
+    int a=0;
+    int r=(4 & color)>>2;
+    int g= 2 & color;
+    int b=(1 & color)<<2;
+    a=r | g | b;
+    int n = 30 + ((a) & 7 % 8);  // ANSI base para background (cores normais)
     printf("\033[%dm", n);
 
     if (color >= 8) {
