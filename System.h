@@ -112,10 +112,19 @@ char Console_ReadKey() {
     }
     return (char)c;
 }
+char *ToString(int texto) {
+    char a[1024];
+    char *aa=a;
+    a[0]='\0';
+    sprintf(a,"%1d", texto);
+    return aa;
+}
+
 
 void Console_WriteLine(const char* texto) {
     printf("%s\n", texto);
 }
+
 void Console_Write(const char* texto) {
     printf("%s", texto);
     fflush(stdout);
