@@ -225,4 +225,9 @@ int Random_Next(int n){
     return rand() % n;
 
 }
+double Random_NextDouble(){
+    srand(time(NULL));
+    return (double)rand() / (double)RAND_MAX;
+
+}
 
