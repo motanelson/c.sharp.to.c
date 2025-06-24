@@ -232,4 +232,11 @@ double Random_NextDouble(){
     return (double)rand() / (double)RAND_MAX;
 
 }
-
+char *DataTime_Now_ToString(){
+     char *buffer = (char *)malloc(1024); // Aloca 1024 caracteres
+     time_t t = time(NULL);
+     struct tm* tm_gmt = gmtime(&t);
+     struct tm* tm_local = localtime(&t);
+     sprintf(buffer,"%s", asctime(tm_local));
+     return buffer;
+}
