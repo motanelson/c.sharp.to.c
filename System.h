@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <ctype.h>
+#include <time.h>
 
 // Cores da consola (baseadas no ConsoleColor do C#)
 typedef enum {
@@ -217,5 +220,9 @@ void Console_SetCursorPosition(int x,int y) {
     printf("\033[%d;%dd", y,x);
     fflush(stdout);  // aplica imediatamente
 }
+int Random_Next(int n){
+    srand(time(NULL));
+    return rand() % n;
 
+}
 
