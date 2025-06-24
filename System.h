@@ -4,6 +4,8 @@
 #include <math.h>
 #include <ctype.h>
 #include <time.h>
+#define String char *
+#define string char *
 
 // Cores da consola (baseadas no ConsoleColor do C#)
 typedef enum {
