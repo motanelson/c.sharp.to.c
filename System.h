@@ -6,6 +6,7 @@
 #include <time.h>
 #define String char *
 #define string char *
+void Main();
 
 // Cores da consola (baseadas no ConsoleColor do C#)
 typedef enum {
@@ -76,6 +77,10 @@ typedef enum {
 
 
 #define BLOCO_TAMANHO 4096
+int main(int argc, char *argv[]){
+    srand(time(NULL));
+    Main();
+}
 
 void Console_Clear() {
     for (int i = 0; i < 500; i++) {
@@ -223,12 +228,12 @@ void Console_SetCursorPosition(int x,int y) {
     fflush(stdout);  // aplica imediatamente
 }
 int Random_Next(int n){
-    srand(time(NULL));
+    
     return rand() % n;
 
 }
 double Random_NextDouble(){
-    srand(time(NULL));
+    
     return (double)rand() / (double)RAND_MAX;
 
 }
