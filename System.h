@@ -6,6 +6,8 @@
 #include <time.h>
 #define String char *
 #define string char *
+int *memall[4096];
+int memallcounter=0;
 void Main();
 
 // Cores da consola (baseadas no ConsoleColor do C#)
@@ -77,9 +79,24 @@ typedef enum {
 
 
 #define BLOCO_TAMANHO 4096
+char *memallmalloc(int c){
+    char *buffer = (char *)malloc(c);
+    memall[memallcounter]=(int *)buffer;
+    return buffer;
+}
+char *memallrealmalloc(char *buffer,int c){
+    buffer = (char *)realloc(buffer,c);
+    memall[memallcounter]=(int *)buffer;
+    return buffer;
+}
 int main(int argc, char *argv[]){
+    int n=0;
     srand(time(NULL));
     Main();
+    if(memallcounter>0){
+        for (n=0;n<memallcounter;n++)free(memall[n]);
+    }
+    return 0;
 }
 
 void Console_Clear() {
@@ -92,7 +109,7 @@ void Console_Beep() {
     fflush(stdout);  // Garante que o som é enviado imediatamente
 }
 char* Console_ReadLine() {
-    char* buffer = malloc(BLOCO_TAMANHO);
+    char* buffer = memallmalloc(BLOCO_TAMANHO);
     if (!buffer) return NULL;
 
     if (fgets(buffer, BLOCO_TAMANHO, stdin) == NULL) {
@@ -123,7 +140,7 @@ char Console_ReadKey() {
     return (char)c;
 }
 char *ToString(double numero) {
-    char *buffer = (char *)malloc(1024); // Aloca 1024 caracteres
+    char *buffer = (char *)memallmalloc(1024); // Aloca 1024 caracteres
     if (buffer == NULL) {
         return NULL; // Falha na alocação
     }
@@ -150,7 +167,7 @@ char* File_ReadAllText(const char* path) {
 
     size_t capacidade = BLOCO_TAMANHO;
     size_t tamanho = 0;
-    char* buffer = malloc(capacidade);
+    char* buffer = memallmalloc(capacidade);
     if (!buffer) {
         fclose(f);
         return NULL;
@@ -161,7 +178,7 @@ char* File_ReadAllText(const char* path) {
         tamanho += lido;
         if (tamanho + BLOCO_TAMANHO > capacidade) {
             capacidade += BLOCO_TAMANHO;
-            char* novo = realloc(buffer, capacidade);
+            char* novo = memallrealmalloc(buffer, capacidade);
             if (!novo) {
                 free(buffer);
                 fclose(f);
@@ -238,7 +255,7 @@ double Random_NextDouble(){
 
 }
 char *DataTime_Now_ToString(){
-     char *buffer = (char *)malloc(1024); // Aloca 1024 caracteres
+     char *buffer = (char *)memallmalloc(1024); // Aloca 1024 caracteres
      time_t t = time(NULL);
      struct tm* tm_gmt = gmtime(&t);
      struct tm* tm_local = localtime(&t);
