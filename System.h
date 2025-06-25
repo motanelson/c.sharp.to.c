@@ -82,19 +82,24 @@ typedef enum {
 char *memallmalloc(int c){
     char *buffer = (char *)malloc(c);
     memall[memallcounter]=(int *)buffer;
+    memallcounter++;
     return buffer;
 }
 char *memallrealmalloc(char *buffer,int c){
     buffer = (char *)realloc(buffer,c);
     memall[memallcounter]=(int *)buffer;
+    memallcounter++;
     return buffer;
 }
 int main(int argc, char *argv[]){
     int n=0;
     srand(time(NULL));
+    for (n=0;n<4096;n++)memall[n]!=NULL;
     Main();
     if(memallcounter>0){
-        for (n=0;n<memallcounter;n++)free(memall[n]);
+        for (n=0;n<memallcounter;n++){
+            if(memall[n]!=NULL)free(memall[n]);
+        }
     }
     return 0;
 }
