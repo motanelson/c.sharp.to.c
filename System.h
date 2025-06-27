@@ -143,11 +143,9 @@ char Console_ReadKey() {
     return (char)c;
 }
 char *ToString(double numero) {
-    char *buffer = (char *)memallmalloc(1024); // Aloca 1024 caracteres
-    if (buffer == NULL) {
-        return NULL; // Falha na alocação
-    }
-
+    char buffers[1024];
+    char *buffer = (char *)buffers; // Aloca 1024 caracteres
+    
     sprintf(buffer, "%.2f", numero); // Converte o inteiro para string
     return buffer;
 }
@@ -170,7 +168,7 @@ char* File_ReadAllText(const char* path) {
 
     size_t capacidade = BLOCO_TAMANHO;
     size_t tamanho = 0;
-    char* buffer = memallmalloc(capacidade);
+    char* buffer = malloc(capacidade);
     if (!buffer) {
         fclose(f);
         return NULL;
@@ -181,7 +179,7 @@ char* File_ReadAllText(const char* path) {
         tamanho += lido;
         if (tamanho + BLOCO_TAMANHO > capacidade) {
             capacidade += BLOCO_TAMANHO;
-            char* novo = memallrealmalloc(buffer, capacidade);
+            char* novo = realloc(buffer, capacidade);
             if (!novo) {
                 free(buffer);
                 fclose(f);
@@ -193,6 +191,10 @@ char* File_ReadAllText(const char* path) {
 
     buffer[tamanho] = '\0';  // Terminar como string
     fclose(f);
+    memall[memallcounter] =(char *) buffer;
+    //printf("%p\n",memall[memallcounter]);    
+    memallcounter++;
+
     return buffer;
 }
 
