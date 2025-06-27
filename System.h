@@ -80,36 +80,29 @@ typedef enum {
 
 #define BLOCO_TAMANHO 4096
 char *memallmalloc(int c){
-    char *ptr = malloc(c);
-    if (ptr == NULL) {
-        // Lida com erro de alocação
-        return NULL;
-    }
-    memall[memallcounter] = ptr;
+    memall[memallcounter] = malloc(c);
+        
     memallcounter++;
-    return ptr;
+    return memall[memallcounter-1];
 }
 char *memallrealmalloc(char *buffer,int c){
-    char *ptr = realloc(buffer,c);
-    if (ptr == NULL) {
-        // Lida com erro de alocação
-        return NULL;
-    }
-    memall[memallcounter] = ptr;
+    memall[memallcounter] = realloc(buffer,c);
     memallcounter++;
+    return memall[memallcounter-1];
 
-    return ptr;
 
 
     
 }
 int main(int argc, char *argv[]){
     int n=0;
+    memallcounter=0;
     srand(time(NULL));
     for (n=0;n<4095;n++)memall[n]= NULL;
     Main();
     if(memallcounter>0){
         for (n=0;n<memallcounter;n++){
+            
             if(memall[n]!=NULL)free(memall[n]);
         }
     }
