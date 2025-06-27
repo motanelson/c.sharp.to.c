@@ -80,13 +80,14 @@ typedef enum {
 
 #define BLOCO_TAMANHO 4096
 char *memallmalloc(int c){
-    memall[memallcounter] = malloc(c);
-        
+    memall[memallcounter] =(char *) malloc(c);
+    //printf("%p\n",memall[memallcounter]);    
     memallcounter++;
     return memall[memallcounter-1];
 }
 char *memallrealmalloc(char *buffer,int c){
-    memall[memallcounter] = realloc(buffer,c);
+    memall[memallcounter] =(char *) realloc(buffer,c);
+     
     memallcounter++;
     return memall[memallcounter-1];
 
@@ -102,7 +103,7 @@ int main(int argc, char *argv[]){
     Main();
     if(memallcounter>0){
         for (n=0;n<memallcounter;n++){
-            
+            //printf("%p\n",memall[n]); 
             if(memall[n]!=NULL)free(memall[n]);
         }
     }
