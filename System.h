@@ -120,19 +120,11 @@ void Console_Beep() {
     fflush(stdout);  // Garante que o som é enviado imediatamente
 }
 char* Console_ReadLine() {
-    char* buffer = memallmalloc(BLOCO_TAMANHO);
-    if (!buffer) return NULL;
+    char buffers[BLOCO_TAMANHO]="\0";
+    char *buffer=buffers;
 
-    if (fgets(buffer, BLOCO_TAMANHO, stdin) == NULL) {
-        free(buffer);
-        return NULL;
-    }
-
-    // Remove newline se presente
-    size_t len = strlen(buffer);
-    if (len > 0 && buffer[len - 1] == '\n') {
-        buffer[len - 1] = '\0';
-    }
+    fgets(buffers, BLOCO_TAMANHO, stdin);
+    
 
     return buffer;
 }
